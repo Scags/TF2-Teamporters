@@ -84,7 +84,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 			GetEntPropVector(ent, Prop_Send, "m_angRotation", vecRotation);	// Force players to look in the direction of teleporter on spawn
 		}
 	}
-	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team-2]) >= 7000)	// If no teleporters found
+	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team == 2 ? 1 : 0]) >= 7000)	// If no teleporters found
 		return Plugin_Continue;
 
 	vecIsActuallyGoingToSpawn[2] += 15.0;	// Don't get stuck inside of teleporter
