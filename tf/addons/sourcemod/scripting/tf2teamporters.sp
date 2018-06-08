@@ -19,9 +19,11 @@ public void OnPluginStart()
 	AutoExecConfig(true, "TF2 Teamporters");
 
 	HookEvent("player_spawn", OnPlayerSpawn);
+	HookEvent("teamplay_round_start", OnNeedReset);
+	HookEvent("teamplay_point_captured", OnNeedReset);
 }
 
-public void OnMapStart()
+public void OnNeedReset(Event event, const char[] name, bool dontBroadcast)
 {
 	int spawnteam, ent = -1;
 	ArrayList redspawn = new ArrayList();
@@ -59,7 +61,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 	int ent = -1;
 	float vecSpawn[3];
 	float vecIsActuallyGoingToSpawn[3] = {-9999.0, -9999.0, -9999.0};
-	float dist, otherdist = GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team-2]);
+	float dist, otherdist = GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team == 2 ? 1 : 0]);
 	float vecRotation[3];
 
 	while ((ent = FindEntityByClassname(ent, "obj_teleporter")) != -1)
