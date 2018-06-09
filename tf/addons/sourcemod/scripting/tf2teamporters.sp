@@ -59,9 +59,10 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 		return Plugin_Continue;
 
 	int ent = -1;
+	int i = (team == 2 ? 1 : 0);
 	float vecSpawn[3];
 	float vecIsActuallyGoingToSpawn[3] = {-9999.0, -9999.0, -9999.0};
-	float dist, otherdist = GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team == 2 ? 1 : 0]);
+	float dist, otherdist = GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[i]);
 	float vecRotation[3];
 
 	while ((ent = FindEntityByClassname(ent, "obj_teleporter")) != -1)
@@ -78,7 +79,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 			continue;
 
 		GetEntPropVector(ent, Prop_Send, "m_vecOrigin", vecSpawn);
-		dist = GetVectorDistance(vecSpawn, vecSpawns[team-2]);
+		dist = GetVectorDistance(vecSpawn, vecSpawns[i]);
 		if (dist < otherdist)
 		{
 			otherdist = dist;
@@ -86,7 +87,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 			GetEntPropVector(ent, Prop_Send, "m_angRotation", vecRotation);	// Force players to look in the direction of teleporter on spawn
 		}
 	}
-	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[team == 2 ? 1 : 0]) >= 7000)	// If no teleporters found
+	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[i]) >= 7000)	// If no teleporters found
 		return Plugin_Continue;
 
 	vecIsActuallyGoingToSpawn[2] += 15.0;	// Don't get stuck inside of teleporter
