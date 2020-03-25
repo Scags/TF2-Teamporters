@@ -31,6 +31,9 @@ public void OnNeedReset(Event event, const char[] name, bool dontBroadcast)
 
 	while ((ent = FindEntityByClassname(ent, "info_player_teamspawn")) != -1)
 	{
+		if (GetEntProp(ent, Prop_Data, "m_bDisabled"))
+			continue;
+
 		spawnteam = GetEntProp(ent, Prop_Send, "m_iTeamNum");
 		if (spawnteam == 2)	// Push ents to according team arraylist
 			redspawn.Push(ent);
@@ -61,7 +64,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 	int ent = -1;
 	int i = (team == 2 ? 1 : 0);
 	float vecSpawn[3];
-	float vecIsActuallyGoingToSpawn[3] = {-9999.0, -9999.0, -9999.0};
+	float vecIsActuallyGoingToSpawn[3] = {-99999.0, -99999.0, -99999.0};
 	float dist, otherdist = GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[i]);
 	float vecRotation[3];
 
@@ -87,7 +90,7 @@ public Action OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 			GetEntPropVector(ent, Prop_Send, "m_angRotation", vecRotation);	// Force players to look in the direction of teleporter on spawn
 		}
 	}
-	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[i]) >= 7000)	// If no teleporters found
+	if (GetVectorDistance(vecIsActuallyGoingToSpawn, vecSpawns[i]) >= 70000)	// If no teleporters found
 		return Plugin_Continue;
 
 	vecIsActuallyGoingToSpawn[2] += 15.0;	// Don't get stuck inside of teleporter
